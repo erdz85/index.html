@@ -1,5 +1,6 @@
 import streamlit as st
 import streamlit.components.v1 as components
+import os
 
 # 1. Setup page layout
 st.set_page_config(
@@ -11,29 +12,20 @@ st.set_page_config(
 st.title("🕹️ Retro NES Emulator")
 st.caption("Built with Streamlit & EmulatorJS. Run your favorite retro tests directly in the browser.")
 
-# 2. Pure HTML/JS Emulator Engine with Responsive Landscape Overrides
-emulator_html = """<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <style>
-        body {
-            background-color: #0e1117;
-            color: #ffffff;
-            font-family: system-ui, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
-        #picker-container {
-            text-align: center;
-            padding: 40px 20px;
-            border: 2px dashed #31333f;
+# 2. Safely read the HTML file from local storage
+# This protects your deployment from mobile copy/paste syntax errors
+html_file_path = os.path.join(os.path.dirname(__file__), "emulator.html")
+
+if os.path.exists(html_file_path):
+    with open(html_file_path, "r", encoding="utf-8") as f:
+        emulator_html = f.read()
+    
+    # Inject the HTML component smoothly
+    components.html(emulator_html, height=720, scrolling=False)
+else:
+    st.error("Missing 'emulator.html' file! Please make sure it is created in the same repository folder.")
+
+st.info("💡 Note: Game files are processed locally on your device and are never uploaded to any server.")
             border-radius: 10px;
             background: #131722;
             width: 80%;
