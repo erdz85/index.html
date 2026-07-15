@@ -65,7 +65,7 @@ emulator_html = """<!DOCTYPE html>
         <p style="color: #a3a8b4; font-size: 14px;">Select a .nes ROM file from your phone storage to start playing.</p>
         <label class="btn-upload">
             Choose File
-            <input type="file" id="rom-file" accept=".nes">
+            <input type="file" id="rom-file" accept=".nes,.zip">
         </label>
     </div>
 
